@@ -1,5 +1,6 @@
 /*
  CDRSXCodeInterfaces.h
+ xcode的私有类接口申明？
  originally was taken from https://github.com/cppforlife/CedarShortcuts
  */
 

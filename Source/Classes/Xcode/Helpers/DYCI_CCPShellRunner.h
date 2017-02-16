@@ -25,6 +25,7 @@
 
 @interface DYCI_CCPShellRunner : NSObject
 
+// 执行shell脚本
 + (void)runShellCommand:(NSString *)command withArgs:(NSArray *)args directory:(NSString *)directory environment:(NSMutableDictionary *)environment completion:(void (^)(NSTask *t))completion;
 
 @end

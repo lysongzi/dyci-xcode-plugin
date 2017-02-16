@@ -125,6 +125,7 @@
 - (void)recompileAndInject:(id)sender {
     NSDocument<CDRSXcode_IDEEditorDocument> *currentDocument = (NSDocument<CDRSXcode_IDEEditorDocument> *)[self.xcodeStructureManager currentDocument];
     if ([currentDocument isDocumentEdited]) {
+        //必须要保存之后再进行注入编译
         [currentDocument saveDocumentWithDelegate:self didSaveSelector:@selector(document:didSave:contextInfo:) contextInfo:nil];
     } else {
         [self recompileAndInjectAfterSave:nil];
@@ -142,13 +143,14 @@
     [console log:@"Starting Injection"];
     __weak SFDYCIPlugin *weakSelf = self;
 
-
+    //获取被修改的文件路径
     NSURL *openedFileURL = self.xcodeStructureManager.activeDocumentFileURL;
 
     if (openedFileURL) {
 
         [console log:[NSString stringWithFormat:@"Injecting %@(%@)", openedFileURL.lastPathComponent, openedFileURL]];
 
+        // 编译单个对象
         [self.recompiler recompileFileAtURL:openedFileURL completion:^(NSError *error) {
             if (error) {
                 [weakSelf.viewHelper showError:error];

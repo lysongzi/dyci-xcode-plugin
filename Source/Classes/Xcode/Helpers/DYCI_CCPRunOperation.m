@@ -29,7 +29,7 @@
     BOOL isFinished;
 }
 
-@property (retain) DYCI_CCPXCodeConsole * xcodeConsole;
+@property (retain) DYCI_CCPXCodeConsole * xcodeConsole; //debug的console对象，用于输出的...
 
 @property (retain) NSTask* task;
 @property (retain) id taskStandardOutDataAvailableObserver;
@@ -55,6 +55,7 @@
     return isExecuting;
 }
 
+// 这里kvo是要干啥...
 - (void)setIsExecuting:(BOOL)_isExecuting
 {
     [self willChangeValueForKey:@"isExecuting"];
@@ -74,13 +75,15 @@
     [self didChangeValueForKey:@"isFinished"];
 }
 
+// 任务内容
 - (void)start
 {
-    if (self.isCancelled) {
+    if (self.isCancelled) { //任务被取消
         self.isFinished = YES;
         return;
     }
 
+    //转到主线程执行任务
     if (!NSThread.isMainThread) {
         [self performSelector:@selector(start) onThread:NSThread.mainThread withObject:nil waitUntilDone:NO];
         return;
@@ -106,16 +109,20 @@
 - (void)runOperation
 {
     @try {
+        //标准输出
         NSPipe* standardOutputPipe = NSPipe.pipe;
         self.task.standardOutput = standardOutputPipe;
+        //标准错误输出
         NSPipe* standardErrorPipe = NSPipe.pipe;
         self.task.standardError = standardErrorPipe;
         NSFileHandle* standardOutputFileHandle = standardOutputPipe.fileHandleForReading;
         NSFileHandle* standardErrorFileHandle = standardErrorPipe.fileHandleForReading;
 
+        //输出结果缓冲区
         __block NSMutableString* standardOutputBuffer = [NSMutableString string];
         __block NSMutableString* standardErrorBuffer = [NSMutableString string];
 
+        //然后监听这两个输出结果么。。。
         self.taskStandardOutDataAvailableObserver = [NSNotificationCenter.defaultCenter addObserverForName:NSFileHandleDataAvailableNotification
                                                                                                     object:standardOutputFileHandle
                                                                                                      queue:NSOperationQueue.mainQueue
@@ -127,10 +134,11 @@
                                                                                                         [fileHandle waitForDataInBackgroundAndNotify];
                                                                                                         standardOutputBuffer = [self writePipeBuffer:standardOutputBuffer];
                                                                                                     } else {
+                                                                                                        //这是输出结束的信号？
                                                                                                         [self appendLine:standardOutputBuffer];
-                                                                                                        [NSNotificationCenter.defaultCenter removeObserver:self.taskStandardOutDataAvailableObserver];
+                                                                                                        [NSNotificationCenter.defaultCenter removeObserver:self.taskStandardOutDataAvailableObserver]; //移除监听事件
                                                                                                         self.taskStandardOutDataAvailableObserver = nil;
-                                                                                                        [self checkAndSetFinished];
+                                                                                                        [self checkAndSetFinished]; //设置operation状态
                                                                                                     }
                                                                                                 }];
 
@@ -179,7 +187,7 @@
 
 - (NSMutableString*)writePipeBuffer:(NSMutableString*)buffer
 {
-    NSArray* lines = [buffer componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet];
+    NSArray* lines = [buffer componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet]; //按行划分
     if (lines.count > 1) {
         for (int i = 0; i < lines.count - 1; i++) {
             NSString* line = lines[i];

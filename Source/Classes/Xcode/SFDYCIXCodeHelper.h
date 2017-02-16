@@ -21,26 +21,31 @@ No other parts of this project should know about Xcode project structure, about 
 
 /*
  Current editor context
+ 当前编辑器上下文环境
  */
 - (XC(IDEEditorContext))activeEditorContext;
 
 /*
-Currently active opened file
+ Currently active opened file
+ 当前正在打开编辑的文件
  */
 - (NSURL *)activeDocumentFileURL;
 
 /*
-Returns target for specified fileURL
+ Returns target for specified fileURL
+ 指定文件路径的target
  */
 - (XC(PBXTarget))targetInOpenedProjectForFileURL:(NSURL *)fileURL;
 
 /*
-Returns active workspace window controller, if any
+ Returns active workspace window controller, if any
+ 返回当前工作空间控制器对象
  */
 - (XC(IDEWorkspaceWindowController))workspaceWindowController;
 
 /*
-Current editing document
+ Current editing document
+ 当前编辑的文档对象
  */
 - (XC(IDEEditorDocument))currentDocument;
 

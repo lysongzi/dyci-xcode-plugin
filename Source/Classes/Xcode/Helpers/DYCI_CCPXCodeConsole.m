@@ -184,9 +184,11 @@ static NSMutableDictionary* sharedInstances;
         && [self.window isKindOfClass:NSClassFromString(@"IDEWorkspaceWindow")]
         && [self.window.windowController isKindOfClass:NSClassFromString(@"IDEWorkspaceWindowController")]) {
         id editorArea = [self.window.windowController valueForKey:@"editorArea"];
+        // 激活console?
         [editorArea performSelector:@selector(activateConsole:) withObject:self];
     }
 
+    // 这里是清除console的输出？
     [console.textStorage deleteCharactersInRange:NSMakeRange(0, console.textStorage.length)];
 
     return console;

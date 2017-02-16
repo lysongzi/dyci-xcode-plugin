@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 /*
+ 一个对象保存了后续用于编译动态库所需要的参数信息
 Object that represent parameters those will be used to perform compilation of .dylib
  */
 @interface SFDYCIClangParams : NSObject

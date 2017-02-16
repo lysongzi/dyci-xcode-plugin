@@ -14,7 +14,7 @@
 
 /*
 Performs recompilation for specified fileURL
-Completion block should be called on the comletion.
+Completion block should be called on the completion.
 NSError should be filled in if recompilation fails
  */
 - (void)recompileFileAtURL:(NSURL *)fileURL completion:(void(^)(NSError * error))completionBlock;
@@ -23,6 +23,5 @@ NSError should be filled in if recompilation fails
 Returns if file at specified url can be recompiled
  */
 - (BOOL)canRecompileFileAtURL:(NSURL *)fileURL;
-
 
 @end

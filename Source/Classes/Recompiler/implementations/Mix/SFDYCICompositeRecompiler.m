@@ -32,6 +32,7 @@
                 // Fallback
                 if (error) {
                     [console log:[NSString stringWithFormat:@"%@ failed to recompile file. Trying other available recompilers %@", recompiler, availableRecompilers]];
+                    // 专门编译oc文件的不成功，在使用通用编译对象再编一次哈哈哈哈哈
                     [self recompileFileAtURL:fileURL completion:completionBlock recompilers:availableRecompilers];
                 } else {
                     if (completionBlock) {
@@ -50,6 +51,7 @@
 
 
 - (BOOL)canRecompileFileAtURL:(NSURL *)fileURL {
+    // 你这么循环的判断，不就是说上面那个if判断几乎就是必进的了。。。
     for (id<SFDYCIRecompilerProtocol> recompiler in self.compilers) {
         if ([recompiler canRecompileFileAtURL:fileURL]) {
             return YES;

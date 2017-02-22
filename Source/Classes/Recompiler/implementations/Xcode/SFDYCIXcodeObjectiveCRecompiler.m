@@ -19,8 +19,9 @@
 
 @interface SFDYCIXcodeObjectiveCRecompiler ()
 
+// 用于参数提取的对象
 @property(nonatomic, strong) SFDYCIClangParamsExtractor * clangParamsExtractor;
-
+// console输出对象
 @property(nonatomic, strong) DYCI_CCPXCodeConsole *console;
 @end
 
@@ -85,6 +86,7 @@
                 if (error != nil) {
                     completionBlock(error);
                 } else {
+                    // 创建动态库...
                     [self createDynamiclibraryWithCommand:command completion:completionBlock];
                 }
             }];
@@ -93,7 +95,7 @@
 
         }
 
-        // Linker arguments
+        // Linker arguments 链接器的参数
         if ([[ruleInfo firstObject] isEqualToString:@"Ld"]) {
             /*
              * Xcode doesn't pass object files (.o) directly to the linker (it uses
@@ -150,7 +152,6 @@
     }
     return _console;
 }
-
 
 - (void)createDynamiclibraryWithCommand:(id <CDRSXcode_XCDependencyCommand>)command completion:(void (^)(NSError *))completion {
 

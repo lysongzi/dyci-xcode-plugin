@@ -12,6 +12,7 @@
 /*
 Object that is responsibel for extracting parameters those are needed to
 perform successful recompilation
+ 用于提取编译所需的参数的类
  */
 @interface SFDYCIClangParamsExtractor : NSObject
 

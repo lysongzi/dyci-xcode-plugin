@@ -18,6 +18,7 @@
     clangParams.LParams = LParams;
     NSMutableArray * FParams = [NSMutableArray array];
     clangParams.FParams = FParams;
+    
     [arguments enumerateObjectsUsingBlock:^(NSString * argument, NSUInteger idx, BOOL * stop) {
 
         if ([argument rangeOfString:@".*\\w+\\.mm?$" options:NSRegularExpressionSearch].location != NSNotFound) {

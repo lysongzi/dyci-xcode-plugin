@@ -23,9 +23,19 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol DYCI_CCPXCodeConsoleProtocol;
+
 @interface DYCI_CCPShellRunner : NSObject
 
 // 执行shell脚本
 + (void)runShellCommand:(NSString *)command withArgs:(NSArray *)args directory:(NSString *)directory environment:(NSMutableDictionary *)environment completion:(void (^)(NSTask *t))completion;
+
+@end
+
+
+@interface DYCI_CCPShellRunner (ConsoleRunning)
+
++ (void)runShellCommand:(NSString *)command withArgs:(NSArray *)args directory:(NSString *)directory environment:(NSMutableDictionary *)environment
+                console:(id<DYCI_CCPXCodeConsoleProtocol>)console completion:(void (^)(NSError *))completion;
 
 @end
